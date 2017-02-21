@@ -91,7 +91,7 @@ row selection box row =
 item : Selection -> Int -> Int -> Int -> Html Msg
 item selection box row item =
     div
-        [ on "click" (handleClick box row item)
+        [ onMultiClick (clickMsg box row item)
         , classList
             [ ( "item", True )
             , ( "selected", selection == Item box row item )
@@ -100,10 +100,11 @@ item selection box row item =
         []
 
 
-handleClick : Int -> Int -> Int -> Decoder Msg
-handleClick box row item =
+onMultiClick : (Maybe Int -> Msg) -> Attribute Msg
+onMultiClick intToMsg =
     maybe (field "detail" int)
-        |> Json.Decode.map (clickMsg box row item)
+        |> Json.Decode.map intToMsg
+        |> on "click"
 
 
 clickMsg : Int -> Int -> Int -> Maybe Int -> Msg
