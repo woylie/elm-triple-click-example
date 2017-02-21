@@ -103,25 +103,23 @@ item selection box row item =
 handleClick : Int -> Int -> Int -> Decoder Msg
 handleClick box row item =
     maybe (field "detail" int)
-        |> andThen (clickMsg box row item)
+        |> Json.Decode.map (clickMsg box row item)
 
 
-clickMsg : Int -> Int -> Int -> Maybe Int -> Decoder Msg
+clickMsg : Int -> Int -> Int -> Maybe Int -> Msg
 clickMsg box row item s =
-    Json.Decode.succeed
-        (case s of
-            Just 1 ->
-                Select (Item box row item)
+    case s of
+        Just 1 ->
+            Select (Item box row item)
 
-            Just 2 ->
-                Select (Row box row)
+        Just 2 ->
+            Select (Row box row)
 
-            Just 3 ->
-                Select (Box box)
+        Just 3 ->
+            Select (Box box)
 
-            Just _ ->
-                Select All
+        Just _ ->
+            Select All
 
-            Nothing ->
-                Select (Item box row item)
-        )
+        Nothing ->
+            Select (Item box row item)
