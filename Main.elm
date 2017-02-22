@@ -100,7 +100,7 @@ item selection box row item =
         []
 
 
-onMultiClick : (Maybe Int -> Msg) -> Attribute Msg
+onMultiClick : (Maybe Int -> msg) -> Attribute msg
 onMultiClick intToMsg =
     maybe (field "detail" int)
         |> Json.Decode.map intToMsg
