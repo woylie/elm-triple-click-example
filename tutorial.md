@@ -240,23 +240,23 @@ Just in case the browser doesn't support the `detail` property, we're decoding t
 ```elm
     clickMsg : Int -> Int -> Int -> Maybe Int -> Decoder Msg
     clickMsg box row item s =
-      Json.Decode.succeed
-          (case s of
-              Just 1 ->
-                  Select (Item box row item)
+        Json.Decode.succeed
+            (case s of
+                Just 1 ->
+                    Select (Item box row item)
 
-              Just 2 ->
-                  Select (Row box row)
+                Just 2 ->
+                    Select (Row box row)
 
-              Just 3 ->
-                  Select (Box box)
+                Just 3 ->
+                    Select (Box box)
 
-              Just _ ->
-                  Select All
+                Just _ ->
+                    Select All
 
-              Nothing ->
-                  Select (Item box row item)
-          )
+                Nothing ->
+                    Select (Item box row item)
+            )
 ```
 
 In case the browser doesn't pass a proper `detail` property, we want to select a single item only, so we still have some basic functionality. Because `case` needs branches for all possibilities, we need to define a `Just _` branch to handle more than three clicks in a row. We want to select all items in that case, so that all items are being selected even if the user accidentally clicks too often.
