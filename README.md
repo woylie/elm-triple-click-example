@@ -1,6 +1,6 @@
-This is a simple example to demonstrate how to handle triple, quadruple, or even more clicks in Elm.
+This is a simple example to demonstrate how to handle triple, quadruple, or even more clicks in Elm. You can find the tutorial [here](https://github.com/woylie/elm-triple-click-example/blob/master/tutorial.md).
 
-To run the example, run:
+To run the example, execute:
 
 ```
 git clone https://github.com/woylie/elm-triple-click-example.git
