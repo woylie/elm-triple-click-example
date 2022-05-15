@@ -1,9 +1,10 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Json.Decode exposing (..)
+import Browser
+import Html exposing (Attribute, Html, div)
+import Html.Attributes exposing (classList)
+import Html.Events exposing (on)
+import Json.Decode exposing (field, int, maybe)
 
 
 type alias Model =
@@ -12,7 +13,6 @@ type alias Model =
 
 type Msg
     = Select Selection
-    | NoOp
 
 
 type Selection
@@ -23,27 +23,25 @@ type Selection
     | Clear
 
 
+main : Program () Model Msg
 main =
-    Html.beginnerProgram
-        { model = initialModel
+    Browser.sandbox
+        { init = init
         , update = update
         , view = view
         }
 
 
-initialModel : Model
-initialModel =
+init : Model
+init =
     Clear
 
 
 update : Msg -> Model -> Model
-update msg model =
+update msg _ =
     case msg of
         Select selection ->
             selection
-
-        NoOp ->
-            model
 
 
 view : Model -> Html Msg
@@ -61,40 +59,40 @@ view model =
 
 
 box : Selection -> Int -> Html Msg
-box selection box =
+box selection boxId =
     div
         [ classList
             [ ( "box", True )
-            , ( "selected", selection == Box box )
+            , ( "selected", selection == Box boxId )
             ]
         ]
         (List.map
-            (row selection box)
+            (row selection boxId)
             (List.range 1 3)
         )
 
 
 row : Selection -> Int -> Int -> Html Msg
-row selection box row =
+row selection boxId rowId =
     div
         [ classList
             [ ( "row", True )
-            , ( "selected", selection == Row box row )
+            , ( "selected", selection == Row boxId rowId )
             ]
         ]
         (List.map
-            (item selection box row)
+            (item selection boxId rowId)
             (List.range 1 3)
         )
 
 
 item : Selection -> Int -> Int -> Int -> Html Msg
-item selection box row item =
+item selection boxId rowId itemId =
     div
-        [ onMultiClick (clickMsg box row item)
+        [ onMultiClick (clickMsg boxId rowId itemId)
         , classList
             [ ( "item", True )
-            , ( "selected", selection == Item box row item )
+            , ( "selected", selection == Item boxId rowId itemId )
             ]
         ]
         []
@@ -108,19 +106,19 @@ onMultiClick intToMsg =
 
 
 clickMsg : Int -> Int -> Int -> Maybe Int -> Msg
-clickMsg box row item s =
+clickMsg boxId rowId itemId s =
     case s of
         Just 1 ->
-            Select (Item box row item)
+            Select (Item boxId rowId itemId)
 
         Just 2 ->
-            Select (Row box row)
+            Select (Row boxId rowId)
 
         Just 3 ->
-            Select (Box box)
+            Select (Box boxId)
 
         Just _ ->
             Select All
 
         Nothing ->
-            Select (Item box row item)
+            Select (Item boxId rowId itemId)
