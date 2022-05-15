@@ -13,4 +13,4 @@ cd elm-triple-click-example
 elm make src/Main.elm --output=public/main.js
 ```
 
-Then open index.html in your browser.
+Then open `public/index.html` in your browser.
